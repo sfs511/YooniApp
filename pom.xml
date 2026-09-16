@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- En-tête XML indiquant la version XML et le codage des caractères (UTF-8) -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!-- Balise racine définissant le modèle de projet Maven (version 4.0.0) -->
+
+    <modelVersion>4.0.0</modelVersion>
+    <!-- Spécifie la version du modèle POM utilisé par Maven -->
+
+    <parent>
+        <!-- Héritage du projet parent Spring Boot Starter Parent pour la gestion des versions -->
+        <groupId>org.springframework.boot</groupId>
+        <!-- Identifiant du groupe parent Spring Boot -->
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <!-- Identifiant de l'artefact parent Spring Boot -->
+        <version>3.5.16</version>
+        <!-- Version stable de Spring Boot 3.x -->
+        <relativePath/>
+        <!-- Indique à Maven de chercher le parent dans le dépôt distant -->
+    </parent>
+
+    <groupId>sn.yooni</groupId>
+    <!-- Identifiant unique du groupe de votre application (domaine inversé) -->
+
+    <artifactId>YooniApp</artifactId>
+    <!-- Nom unique du module/projet Maven -->
+
+    <version>1.0.0-SNAPSHOT</version>
+    <!-- Version actuelle de développement de l'application -->
+
+    <name>Projet-Yooni</name>
+    <!-- Nom complet et lisible du projet Yooni -->
+
+    <description>Plateforme VTC et de Livraison hautement sécurisée et scalable pour le Sénégal</description>
+    <!-- Description concise du projet Yooni -->
+
+    <properties>
+        <!-- Définition des variables de propriétés du projet -->
+        <java.version>25</java.version>
+        <!-- Version minimale de Java requise (la compilation cible Java 25) -->
+        <jwt.version>0.13.0</jwt.version>
+        <!-- Version de la bibliothèque JJWT pour la gestion des tokens JWT -->
+        <bucket4j.version>8.10.1</bucket4j.version>
+        <!-- Version de Bucket4j pour l'implémentation du Rate Limiting (anti-brute-force) -->
+    </properties>
+
+    <dependencies>
+        <!-- Bloc contenant la liste complète de toutes les dépendances du projet -->
+
+        <!-- ========================================== -->
+        <!-- DEPENDANCES CORE SPRING BOOT               -->
+        <!-- ========================================== -->
+
+        <dependency>
+            <!-- Module Spring Boot Starter Web pour créer des API REST RESTful -->
+            <groupId>org.springframework.boot</groupId>
+            <!-- Identifiant du groupe Spring Framework -->
+            <artifactId>spring-boot-starter-web</artifactId>
+            <!-- Inclut Tomcat embarqué, Spring MVC et Jackson pour le format JSON -->
+        </dependency>
+
+        <dependency>
+            <!-- Module Spring Boot Starter Data JPA pour l'accès aux bases de données via ORM (Hibernate) -->
+            <groupId>org.springframework.boot</groupId>
+            <!-- Identifiant du groupe Spring Framework -->
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <!-- Fournit les PreparedStatement automatisés, requêtes paramétrées et transactions -->
+        </dependency>
+
+        <dependency>
+            <!-- Module Spring Boot Starter Validation pour la validation côté serveur des entrées utilisateurs -->
+            <groupId>org.springframework.boot</groupId>
+            <!-- Identifiant du groupe Spring Framework -->
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <!-- Fournit les annotations de validation (@NotNull, @Size, @Email, @Pattern) -->
+        </dependency>
+
+        <dependency>
+            <!-- Module Spring Boot Starter WebSocket pour la communication bidirectionnelle en temps réel -->
+            <groupId>org.springframework.boot</groupId>
+            <!-- Identifiant du groupe Spring Framework -->
+            <artifactId>spring-boot-starter-websocket</artifactId>
+            <!-- Indispensable pour le suivi GPS en direct des chauffeurs et les notifications instantanées -->
+        </dependency>
+
+        <!-- ========================================== -->
+        <!-- SÉCURITÉ, AUTHENTIFICATION ET AUTHENTIFIE  -->
+        <!-- ========================================== -->
+
+        <dependency>
+            <!-- Module Spring Boot Starter Security pour l'authentification et l'autorisation RBAC -->
+            <groupId>org.springframework.boot</groupId>
+            <!-- Identifiant du groupe Spring Framework -->
+            <artifactId>spring-boot-starter-security</artifactId>
+            <!-- Gère les filtres de sécurité, le hachage des mots de passe et la protection contre les attaques -->
+        </dependency>
+
+        <dependency>
+            <!-- API JJWT pour la création et la gestion des tokens JWT -->
+            <groupId>io.jsonwebtoken</groupId>
+            <!-- Identifiant du groupe JJWT -->
+            <artifactId>jjwt-api</artifactId>
+            <!-- Version définie dans les propriétés -->
+            <version>${jwt.version}</version>
+            <!-- Définit les interfaces standards pour JWT -->
+        </dependency>
+
+        <dependency>
+            <!-- Implémentation JJWT pour le traitement des clés et signatures JWT -->
+            <groupId>io.jsonwebtoken</groupId>
+            <!-- Identifiant du groupe JJWT -->
+            <artifactId>jjwt-impl</artifactId>
+            <!-- Version définie dans les propriétés -->
+            <version>${jwt.version}</version>
+            <!-- Exécute le chiffrement et le déchiffrement des jetons JWT -->
+            <scope>runtime</scope>
+            <!-- Nécessaire uniquement lors de l'exécution -->
+        </dependency>
+
+        <dependency>
+            <!-- Extension JJWT Jackson pour sérialiser/désérialiser les données JSON dans les JWT -->
+            <groupId>io.jsonwebtoken</groupId>
+            <!-- Identifiant du groupe JJWT -->
+            <artifactId>jjwt-jackson</artifactId>
+            <!-- Version définie dans les propriétés -->
+            <version>${jwt.version}</version>
+            <!-- Intègre Jackson avec la librairie JWT -->
+            <scope>runtime</scope>
+            <!-- Nécessaire uniquement lors de l'exécution -->
+        </dependency>
+
+        <dependency>
+            <!-- Bibliothèque Bucket4j pour la gestion du Rate Limiting et la protection anti-brute-force -->
+            <groupId>com.bucket4j</groupId>
+            <!-- Identifiant du groupe Bucket4j -->
+            <artifactId>bucket4j-core</artifactId>
+            <!-- Version définie dans les propriétés -->
+            <version>${bucket4j.version}</version>
+            <!-- Permet d'imposer des limites strictes de requêtes par IP ou par compte utilisateur -->
+        </dependency>
+
+        <!-- ========================================== -->
+        <!-- BASE DE DONNÉES (XAMPP / MYSQL)            -->
+        <!-- ========================================== -->
+
+        <dependency>
+            <!-- Connecteur JDBC MySQL pour la communication avec la base de données XAMPP MySQL -->
+            <groupId>com.mysql</groupId>
+            <!-- Identifiant du groupe MySQL -->
+            <artifactId>mysql-connector-j</artifactId>
+            <!-- Scope par défaut pour l'exécution et la compilation -->
+            <version>9.7.0</version>
+            <scope>runtime</scope>
+            <!-- Pilote officiel pour exécuter les requêtes SQL paramétrées sur MySQL -->
+        </dependency>
+
+        <dependency>
+            <!-- Flyway Core pour la gestion versionnée des migrations de schéma de base de données -->
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <!-- Flyway MySQL pour le support spécifique du dialecte MySQL ( DateFormatter, repeatable migrations ) -->
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
+        </dependency>
+
+        <dependency>
+            <!-- Charge le fichier .env à la racine du projet comme propriétés Spring Boot -->
+            <groupId>me.paulschwarz</groupId>
+            <artifactId>spring-dotenv</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
+        <!-- ========================================== -->
+        <!-- OUTILS DE DÉVELOPPEMENT ET PRODUCTIVITÉ    -->
+        <!-- ========================================== -->
+
+        <dependency>
+            <!-- Bibliothèque Lombok pour réduire le code répétitif (Getters, Setters, Constructors, etc.) -->
+            <groupId>org.projectlombok</groupId>
+            <!-- Identifiant du groupe Lombok -->
+            <artifactId>lombok</artifactId>
+            <!-- Portée optionnelle pour ne pas l'inclure inutilement dans le JAR final -->
+            <optional>true</optional>
+            <!-- Génère automatiquement les méthodes au moment de la compilation -->
+        </dependency>
+
+        <dependency>
+            <!-- Spring Boot DevTools pour le rechargement automatique lors des modifications de code -->
+            <groupId>org.springframework.boot</groupId>
+            <!-- Identifiant du groupe Spring Framework -->
+            <artifactId>spring-boot-devtools</artifactId>
+            <!-- Portée optionnelle -->
+            <optional>true</optional>
+            <!-- Accélère le développement en redémarrant automatiquement le serveur local -->
+        </dependency>
+
+        <!-- ========================================== -->
+        <!-- TESTS UNITAIRES ET D'INTÉGRATION           -->
+        <!-- ========================================== -->
+
+        <dependency>
+            <!-- Module Spring Boot Starter Test pour l'exécution des tests unitaires et d'intégration -->
+            <groupId>org.springframework.boot</groupId>
+            <!-- Identifiant du groupe Spring Framework -->
+            <artifactId>spring-boot-starter-test</artifactId>
+            <!-- Utilisé uniquement pendant la phase de test -->
+            <scope>test</scope>
+            <!-- Inclut JUnit, Mockito et Spring Test -->
+        </dependency>
+
+        <dependency>
+            <!-- Module Spring Security Test pour tester la sécurité des API et des accès -->
+            <groupId>org.springframework.security</groupId>
+            <!-- Identifiant du groupe Spring Security -->
+            <artifactId>spring-security-test</artifactId>
+            <!-- Utilisé uniquement pendant la phase de test -->
+            <scope>test</scope>
+            <!-- Permet d'effectuer des requêtes sécurisées simulant des utilisateurs authentifiés -->
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- Bloc de configuration de la phase de compilation et des plugins Maven -->
+        <plugins>
+            <!-- Liste des plugins à exécuter -->
+
+            <plugin>
+                <!-- Plugin Compiler Java : configuration explicite du processeur d'annotations (Lombok) -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <!-- Identifiant du groupe Maven Compiler Plugin -->
+                <artifactId>maven-compiler-plugin</artifactId>
+                <!-- Configuration du processeur d'annotations -->
+                <configuration>
+                    <!-- Force le traitement complet des annotations (@Getter, @Setter, @Builder, @Slf4j...) -->
+                    <proc>full</proc>
+                    <!-- Chemin dédié des processeurs : garantit que Lombok est détecté (JDK 25) -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <!-- Processeur Lombok versionnée par le parent Spring Boot -->
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <!-- Plugin Spring Boot Maven pour empaqueter l'application en un fichier JAR exécutable -->
+                <groupId>org.springframework.boot</groupId>
+                <!-- Identifiant du groupe Spring Framework -->
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!-- Configuration du plugin -->
+                <configuration>
+                    <mainClass>sn.yooni.YooniApplication</mainClass>
+                    <excludes>
+                        <exclude>
+                            <!-- Exclut Lombok du fichier JAR final car il est utilisé uniquement lors de la compilation -->
+                            <groupId>org.projectlombok</groupId>
+                            <!-- Identifiant du groupe à exclure -->
+                            <artifactId>lombok</artifactId>
+                            <!-- Identifiant de l'artefact à exclure -->
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+<!-- Fin du fichier de configuration Maven pom.xml -->
